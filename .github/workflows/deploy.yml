@@ -19,4 +19,4 @@ jobs:
     steps:
       # 소스코드 체크아웃
       - name: Checkout Source
-        uses: actions/checkout@4
+        uses: actions/checkout@v4
