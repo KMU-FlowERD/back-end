@@ -1,0 +1,22 @@
+name: Deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-FlowERD:
+    name: deploy-FlowERD
+    runs-on: ubuntu-latest
+    env:
+      image-name : FlowERD
+
+    steps:
+      # 소스코드 체크아웃
+      - name: Checkout Source
+        uses: actions/checkout@4
