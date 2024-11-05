@@ -1,9 +1,9 @@
-package com.flowerd.backend.entity;
+package com.flowerd.backend.entity.enum_name;
 
 import lombok.Getter;
 
 @Getter
-public enum Role {
+public enum ROLE {
 
     ROLE_USER("ROLE_USER"),
 
@@ -12,7 +12,7 @@ public enum Role {
 
     final String role;
 
-    Role(String role) {
+    ROLE(String role) {
         this.role = role;
     }
 }
