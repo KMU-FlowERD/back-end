@@ -1,0 +1,37 @@
+spring:
+  data:
+    mongodb:
+      uri: "mongodb://${Mongo_Username}:${Mongo_Password}@${MongoDB_Host}:${MongoDB_Port}/${MongoDB_Database}?authSource=admin"
+
+    redis:
+      repositories:
+        enabled: false
+      host: ${Redis_Host}
+      port: ${Redis_Port}
+
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration,org.springframework.boot.autoconfigure.data.redis.RedisReactiveAutoConfiguration
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${Mail_Email}
+    password: ${Mail_Password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
+            enable: true
+        debug: true
+
+jwt:
+  secret: ${JWT_Secret}
+  access_expiration: 31536000
+  refresh_expiration: 315360000
+
+server:
+  port: 8080

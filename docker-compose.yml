@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+
+  application:
+    container_name: application
+    hostname: application
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      TZ: "Asia/Seoul"
+      MongoDB_Host: ${MONGO_HOST}
+      MongoDB_Port: ${MONGO_PORT}
+      MongoDB_Database: ${MONGO_DATABASE}
+      Mongo_Username: ${MONGO_USERNAME}
+      Mongo_Password: ${MONGO_PASSWORD}
+      Redis_Host: ${REDIS_HOST}
+      Redis_Port: ${REDIS_PORT}
+      Mail_Email: ${MAIL_EMAIL}
+      Mail_Password: ${MAIL_PASSWORD}
+      JWT_Secret: ${JWT_SECRET}
+
+    depends_on:
+      - redis
+      - mongo
+
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    restart: always
+    environment:
+      TZ: "Asia/Seoul"
+
+
+  mongo:
+    container_name: mongo
+    hostname: mongo
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      TZ: "Asia/Seoul"
