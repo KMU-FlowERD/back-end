@@ -15,6 +15,8 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -30,7 +32,7 @@ public class FilterExceptionHandler implements WebFilter {
                     return setErrorResponse(exchange.getResponse(), e.getResponse());
                 })
                 .onErrorResume(Exception.class, e -> {
-                    log.error("FilterExceptionHandler: 필터 예외가 발생했습니다.");
+                    log.error("FilterExceptionHandler: 필터 예외가 발생했습니다." + Arrays.toString(e.getStackTrace()));
                     ApiResponse<?> err = ApiResponse.fail("필터 내부의 예외가 발생했습니다.");
                     return setErrorResponse(exchange.getResponse(), err);
                 });

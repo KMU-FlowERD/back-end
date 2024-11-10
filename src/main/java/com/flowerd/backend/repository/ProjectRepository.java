@@ -1,16 +1,14 @@
 package com.flowerd.backend.repository;
 
-import com.flowerd.backend.entity.Member;
+import com.flowerd.backend.entity.Project;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Optional;
-
 @Repository
-public interface MemberRepository extends ReactiveMongoRepository<Member, ObjectId> {
-    Mono<Boolean> existsByEmail(String email);
+public interface ProjectRepository extends ReactiveMongoRepository<Project, ObjectId>{
 
-    Mono<Member> findByEmail(String email);
+    Flux<Project> findAllByOwnerId(ObjectId ownerId);
 }

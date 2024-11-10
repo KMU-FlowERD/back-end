@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    default: local
+
+logging:
+  level:
+    org.bts.backend: debug
+    org.springframework.web.servlet: debug
