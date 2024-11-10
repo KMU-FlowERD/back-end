@@ -5,9 +5,7 @@ services:
   application:
     container_name: application
     hostname: application
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: minseokey/flow-erd:latest
     ports:
       - "8080:8080"
     restart: always
