@@ -9,7 +9,13 @@ import java.util.List;
 @Setter
 @Getter
 public class SchemaReturns {
-    ObjectId SchemaId;
+    String SchemaId;
     String schemaName;
     List<TableReturns> tableReturns;
+
+    public SchemaReturns(ObjectId schemaId, String schemaName, List<TableReturns> tableReturns) {
+        this.SchemaId = schemaId.toString();
+        this.schemaName = schemaName;
+        this.tableReturns = tableReturns;
+    }
 }

@@ -22,9 +22,9 @@ public class SchemaController {
 
     @PostMapping("/add/schema")
     @Operation(summary = "스키마 추가", description = "새로운 스키마를 추가합니다.")
-    public Mono<ResponseEntity<ApiResponse<ObjectId>>> addSchema(@RequestBody SchemaVO schema) {
+    public Mono<ResponseEntity<ApiResponse<String>>> addSchema(@RequestBody SchemaVO schema) {
         return schemaService.saveSchema(schema)
-                .map(id -> ResponseEntity.ok(ApiResponse.success(id)))
+                .map(id -> ResponseEntity.ok(ApiResponse.success(id.toString())))
                 .onErrorResume(e -> {
                     log.error("스키마 추가 실패: {}", e.getMessage());
                     return Mono.just(ResponseEntity.badRequest().body(ApiResponse.fail("스키마 추가 실패: " + e.getMessage())));

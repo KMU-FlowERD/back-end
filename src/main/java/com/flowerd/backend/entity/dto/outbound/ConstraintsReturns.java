@@ -11,11 +11,11 @@ import org.bson.types.ObjectId;
 @Setter
 public class ConstraintsReturns {
 
-    private ObjectId id;
+    private String id;
 
-    private ObjectId childColumnId;
+    private String childColumnId;
 
-    private ObjectId parentColumnId;
+    private String parentColumnId;
 
     private PARTICIPATION parentParticipation;
 
@@ -26,4 +26,15 @@ public class ConstraintsReturns {
     private CARDINALITY childCardinality;
 
     private RELTYPE relType;
+
+    public ConstraintsReturns(ObjectId id,ObjectId childColumnId, ObjectId parentColumnId, PARTICIPATION parentParticipation, PARTICIPATION childParticipation, CARDINALITY parentCardinality, CARDINALITY childCardinality, RELTYPE relType) {
+        this.id = id.toString();
+        this.childColumnId = childColumnId.toString();
+        this.parentColumnId = parentColumnId.toString();
+        this.parentParticipation = parentParticipation;
+        this.childParticipation = childParticipation;
+        this.parentCardinality = parentCardinality;
+        this.childCardinality = childCardinality;
+        this.relType = relType;
+    }
 }

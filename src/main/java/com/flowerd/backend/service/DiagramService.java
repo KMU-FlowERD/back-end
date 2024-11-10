@@ -52,9 +52,9 @@ public class DiagramService {
                     if(diagramVO.getDiagramName() != null)
                         diagram.setDiagramId(diagramVO.getDiagramName());
                     if(diagramVO.getSizeX() != null)
-                        diagram.setPixel_x(diagramVO.getSizeX());
+                        diagram.setPixel_x(diagramVO.getSizeX()); // maxPixel 조정
                     if(diagramVO.getSizeY() != null)
-                        diagram.setPixel_y(diagramVO.getSizeY());
+                        diagram.setPixel_y(diagramVO.getSizeY()); // maxPixel 조정
                     if(diagramVO.getDiagramContent() != null)
                         diagram.setDiagramContent(diagramVO.getDiagramContent());
                     return diagramRepository.save(diagram);
@@ -65,12 +65,7 @@ public class DiagramService {
     public Mono<DiagramReturns> getListDiagram(ObjectId diagramId) {
         return diagramRepository.findById(diagramId)
                 .flatMap(diagram -> {
-                    DiagramReturns diagramReturns = new DiagramReturns();
-                    diagramReturns.setId(diagram.getId());
-                    diagramReturns.setDiagramName(diagram.getDiagramId());
-                    diagramReturns.setPixel_x(diagram.getPixel_x());
-                    diagramReturns.setPixel_y(diagram.getPixel_y());
-                    diagramReturns.setDiagramContent(diagram.getDiagramContent());
+                    DiagramReturns diagramReturns = new DiagramReturns(diagram.getId(), diagram.getPixel_x(), diagram.getPixel_y(), diagram.getDiagramContent(), null);
 
                     return diagramTableRepository.findAllByDiagramId(diagramId)
                             .flatMap(diagramTable -> tableService.getListTableByDiagramTableId(diagramTable.getTableId()))

@@ -22,9 +22,9 @@ public class ConstraintsController {
     // 새로운 제약조건 추가
     @PostMapping("/add/constraints")
     @Operation(summary = "제약조건 추가", description = "새로운 제약조건을 추가합니다.")
-    public Mono<ResponseEntity<ApiResponse<ObjectId>>> saveConstraints(@RequestBody ConstraintsVO constraintsVO) {
+    public Mono<ResponseEntity<ApiResponse<String>>> saveConstraints(@RequestBody ConstraintsVO constraintsVO) {
         return constraintsService.saveConstraints(constraintsVO)
-                .map(id -> ResponseEntity.ok(ApiResponse.success(id)))
+                .map(id -> ResponseEntity.ok(ApiResponse.success(id.toString())))
                 .onErrorResume(e -> {
                     log.error("제약조건 추가 실패: {}", e.getMessage());
                     return Mono.just(ResponseEntity.badRequest().body(ApiResponse.fail("제약조건 추가 실패: " + e.getMessage())));
@@ -48,7 +48,7 @@ public class ConstraintsController {
     // 제약조건 삭제.
     @DeleteMapping("/delete/constraints/{constraintsId}")
     @Operation(summary = "제약조건 삭제", description = "제약조건을 삭제합니다.")
-    public Mono<ResponseEntity<ApiResponse<Object>>> deleteConstraints(@RequestParam ObjectId constraintsId) {
+    public Mono<ResponseEntity<ApiResponse<Object>>> deleteConstraints(@PathVariable ObjectId constraintsId) {
         return constraintsService.deleteConstraints(constraintsId)
                 .then(Mono.just(ResponseEntity.ok(ApiResponse.success())))
                 .onErrorResume(e -> {

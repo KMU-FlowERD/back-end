@@ -29,9 +29,9 @@ public class ProjectController {
     // 새로운 프로젝트 추가.
     @PostMapping("/add/project")
     @Operation(summary = "프로젝트 추가", description = "새로운 프로젝트를 추가합니다.")
-    public Mono<ResponseEntity<ApiResponse<ObjectId>>> addProject(@RequestBody ProjectVO project, @RequestHeader("Authorization") String token) {
+    public Mono<ResponseEntity<ApiResponse<String>>> addProject(@RequestBody ProjectVO project, @RequestHeader("Authorization") String token) {
         return projectService.saveProject(project, token)
-                .map(id -> ResponseEntity.ok(ApiResponse.success(id)))
+                .map(id -> ResponseEntity.ok(ApiResponse.success(id.toString())))
                 .onErrorResume(e -> {
                     log.error("프로젝트 추가 실패: {}", e.getMessage());
                     return Mono.just(ResponseEntity.badRequest().body(ApiResponse.fail("프로젝트 추가 실패: " + e.getMessage())));

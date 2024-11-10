@@ -23,18 +23,7 @@ public class ConstraintsService {
     public Mono<ConstraintsReturns> getListConstraints(ObjectId constraintsId) {
         return constraintsRepository.findById(constraintsId)
                 .switchIfEmpty(Mono.error(new RuntimeException("칼럼이 존재하지 않습니다.")))
-                .map(constraints -> {
-                    ConstraintsReturns constraintsReturns = new ConstraintsReturns();
-                    constraintsReturns.setId(constraints.getId());
-                    constraintsReturns.setChildColumnId(constraints.getChildColumnId());
-                    constraintsReturns.setParentColumnId(constraints.getParentColumnId());
-                    constraintsReturns.setParentParticipation(constraints.getParentParticipation());
-                    constraintsReturns.setChildParticipation(constraints.getChildParticipation());
-                    constraintsReturns.setParentCardinality(constraints.getParentCardinality());
-                    constraintsReturns.setChildCardinality(constraints.getChildCardinality());
-                    constraintsReturns.setRelType(constraints.getRelType());
-                    return constraintsReturns;
-                });
+                .map(constraints -> new ConstraintsReturns(constraints.getId(), constraints.getChildColumnId(), constraints.getParentColumnId(), constraints.getParentParticipation(), constraints.getChildParticipation(), constraints.getParentCardinality(), constraints.getChildCardinality(), constraints.getRelType()));
     }
 
     public Mono<ObjectId> saveConstraints(ConstraintsVO constraintsVO) {

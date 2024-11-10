@@ -18,18 +18,18 @@ public class Table {
     @Id
     private ObjectId id;
 
-    private ObjectId SchemaId;
+    private ObjectId schemaId;
 
     private String tableName;
 
 
-    public Table(ObjectId SchemaId, String tableName) {
-        this.SchemaId = SchemaId;
+    public Table(ObjectId schemaId, String tableName) {
+        this.schemaId = schemaId;
         this.tableName = tableName;
     }
 
-    public static Mono<Table> of(ObjectId SchemaId, String tableName) {
-        return Mono.just(new Table(SchemaId, tableName));
+    public static Mono<Table> of(ObjectId schemaId, String tableName) {
+        return Mono.just(new Table(schemaId, tableName));
     }
 
 }

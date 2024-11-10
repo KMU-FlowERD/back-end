@@ -10,7 +10,7 @@ import org.bson.types.ObjectId;
 @Setter
 public class ColumnReturns {
 
-    private ObjectId id;
+    private String id;
 
     private String columnName;
 
@@ -23,4 +23,14 @@ public class ColumnReturns {
     private DATATYPE dataType;
 
     private Integer length;
+
+    public ColumnReturns(ObjectId id, String columnName, Boolean nullable, Boolean unique, ISKEY isKey, DATATYPE dataType, Integer length) {
+        this.id = id.toString();
+        this.columnName = columnName;
+        this.nullable = nullable;
+        this.unique = unique;
+        this.isKey = isKey;
+        this.dataType = dataType;
+        this.length = length;
+    }
 }

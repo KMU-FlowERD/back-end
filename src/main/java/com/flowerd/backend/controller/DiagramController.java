@@ -22,9 +22,9 @@ public class DiagramController {
     // 다이어그램 추가
     @PostMapping("/add/diagram")
     @Operation(summary = "다이어그램 추가", description = "새로운 다이어그램을 추가합니다.")
-    public Mono<ResponseEntity<ApiResponse<ObjectId>>> addDiagram(@RequestBody DiagramVO diagramVO) {
+    public Mono<ResponseEntity<ApiResponse<String>>> addDiagram(@RequestBody DiagramVO diagramVO) {
         return diagramService.saveDiagram(diagramVO)
-                .map(id -> ResponseEntity.ok(ApiResponse.success(id)))
+                .map(id -> ResponseEntity.ok(ApiResponse.success(id.toString())))
                 .onErrorResume(e -> {
                     log.error("다이어그램 추가 실패: {}", e.getMessage());
                     return Mono.just(ResponseEntity.badRequest().body(ApiResponse.fail("다이어그램 추가 실패: " + e.getMessage())));

@@ -9,7 +9,13 @@ import java.util.List;
 @Setter
 @Getter
 public class ProjectDrawReturns {
-    ObjectId id;
+    String id;
     String projectName;
     List<DiagramReturns> diagramReturns;
+
+    public ProjectDrawReturns(ObjectId id, String projectName, List<DiagramReturns> diagramReturns) {
+        this.id = id.toString();
+        this.projectName = projectName;
+        this.diagramReturns = diagramReturns;
+    }
 }

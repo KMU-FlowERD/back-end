@@ -22,9 +22,9 @@ public class ColumnController {
         // 새로운 컬럼 추가.
         @PostMapping("/add/column")
         @Operation(summary = "컬럼 추가", description = "새로운 컬럼을 추가합니다.")
-        public Mono<ResponseEntity<ApiResponse<ObjectId>>> saveColumn(@RequestBody ColumnVO columnVO) {
+        public Mono<ResponseEntity<ApiResponse<String>>> saveColumn(@RequestBody ColumnVO columnVO) {
                 return columnService.saveColumn(columnVO)
-                        .map(id -> ResponseEntity.ok(ApiResponse.success(id)))
+                        .map(id -> ResponseEntity.ok(ApiResponse.success(id.toString())))
                         .onErrorResume(e -> {
                                 log.error("컬럼 추가 실패: {}", e.getMessage());
                                 return Mono.just(ResponseEntity.badRequest().body(ApiResponse.fail("컬럼 추가 실패: " + e.getMessage())));
@@ -32,7 +32,7 @@ public class ColumnController {
         }
 
         // 컬럼 수정.
-        @PostMapping("/update/column/{columnId}")
+        @PutMapping("/update/column/{columnId}")
         @Operation(summary = "컬럼 수정", description = "새로운 컬럼을 수정합니다.")
         public Mono<ResponseEntity<ApiResponse<Object>>> updateColumn(@RequestBody ColumnVO columnVO, @PathVariable ObjectId columnId) {
                 return columnService.updateColumn(columnVO, columnId)

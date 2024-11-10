@@ -67,9 +67,7 @@ public class ProjectService {
         return projectRepository.findById(projectId)
                 .switchIfEmpty(Mono.error(new IllegalArgumentException("해당하는 프로젝트가 없습니다.")))
                 .flatMap(project -> {
-                    ProjectReturns projectReturns = new ProjectReturns();
-                    projectReturns.setId(projectId);
-                    projectReturns.setProjectName(project.getProjectName());
+                    ProjectReturns projectReturns = new ProjectReturns(project.getId(), project.getProjectName(), null);
 
                     // SchemaRepository에서 projectId로 연결된 스키마들을 조회하여 스키마 ID 목록 추출
                     return schemaRepository.findAllByProjectId(projectId)
@@ -86,9 +84,7 @@ public class ProjectService {
         return projectRepository.findById(projectId)
                 .switchIfEmpty(Mono.error(new IllegalArgumentException("해당하는 프로젝트가 없습니다.")))
                 .flatMap(project -> {
-                    ProjectDrawReturns projectDrawReturns = new ProjectDrawReturns();
-                    projectDrawReturns.setId(projectId);
-                    projectDrawReturns.setProjectName(project.getProjectName());
+                    ProjectDrawReturns projectDrawReturns = new ProjectDrawReturns(project.getId(), project.getProjectName(), null);
 
                     // DiagramRepository에서 projectId로 연결된 다이어그램들을 조회하여 다이어그램 ID 목록 추출
                     return diagramRepository.findAllByProjectId(projectId)
@@ -125,12 +121,7 @@ public class ProjectService {
                         projectRepository.findAllByOwnerId(member.getId())
                                 .switchIfEmpty(Mono.error(new IllegalArgumentException("해당하는 프로젝트가 없습니다.")))
                 )
-                .map(project -> {
-                            ProjectListReturns projectListReturns = new ProjectListReturns();
-                            projectListReturns.setId(project.getId());
-                            projectListReturns.setProjectName(project.getProjectName());
-                            return projectListReturns;
-                        }
+                .map(project -> new ProjectListReturns(project.getId(),project.getProjectName())
                 )
                 .collectList();
     }

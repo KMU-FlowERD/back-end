@@ -55,9 +55,7 @@ public class SchemaService {
     public Mono<SchemaReturns> getListSchema(ObjectId schemaId) {
         return schemaRepository.findById(schemaId)
                 .flatMap(schema -> {
-                    SchemaReturns schemaReturns = new SchemaReturns();
-                    schemaReturns.setSchemaId(schema.getId());
-                    schemaReturns.setSchemaName(schema.getSchemaName());
+                    SchemaReturns schemaReturns = new SchemaReturns(schema.getId(), schema.getSchemaName(), null);
 
                     // DiagramRepository에서 projectId로 연결된 다이어그램들을 조회하여 다이어그램 ID 목록 추출
                     return tableRepository.findAllBySchemaId(schemaId)

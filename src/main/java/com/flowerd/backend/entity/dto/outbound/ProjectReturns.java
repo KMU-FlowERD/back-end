@@ -9,7 +9,13 @@ import java.util.List;
 @Getter
 @Setter
 public class ProjectReturns {
-    ObjectId id;
+    String id;
     String projectName;
     List<SchemaReturns> schemaReturns;
+
+    public ProjectReturns(ObjectId id, String projectName, List<SchemaReturns> schemaReturns) {
+        this.id = id.toString();
+        this.projectName = projectName;
+        this.schemaReturns = schemaReturns;
+    }
 }

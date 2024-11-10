@@ -59,17 +59,7 @@ public class ColumnService {
     public Mono<ColumnReturns> getListColumn(ObjectId columnId) {
         return columnRepository.findById(columnId)
                 .switchIfEmpty(Mono.error(new RuntimeException("컬럼이 존재하지 않습니다.")))
-                .map(column -> {
-                    ColumnReturns columnReturns = new ColumnReturns();
-                    columnReturns.setId(column.getId());
-                    columnReturns.setColumnName(column.getColumnName());
-                    columnReturns.setNullable(column.getNullable());
-                    columnReturns.setDataType(column.getDataType());
-                    columnReturns.setIsKey(column.getIsKey());
-                    columnReturns.setLength(column.getLength());
-                    columnReturns.setUnique(column.getUnique());
-                    return columnReturns;
-                });
+                .map(column -> new ColumnReturns(column.getId(), column.getColumnName(), column.getNullable(), column.getUnique(), column.getIsKey(), column.getDataType(), column.getLength()));
     }
 
     public Mono<ObjectId> saveColumn(ColumnVO columnVO) {

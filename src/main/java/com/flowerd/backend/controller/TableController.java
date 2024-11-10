@@ -1,6 +1,7 @@
 package com.flowerd.backend.controller;
 
 import com.flowerd.backend.entity.dto.ApiResponse;
+import com.flowerd.backend.entity.dto.inbound.DiagramTableVO;
 import com.flowerd.backend.entity.dto.inbound.TableVO;
 import com.flowerd.backend.entity.dto.outbound.TableReturns;
 import com.flowerd.backend.service.TableService;
@@ -22,9 +23,9 @@ public class TableController {
     // 새로운 테이블 추가 & 수정.
     @PostMapping("/add/table")
     @Operation(summary = "테이블 추가", description = "새로운 테이블을 추가합니다.")
-    public Mono<ResponseEntity<ApiResponse<ObjectId>>> saveTable(@RequestBody TableVO tableVO) {
+    public Mono<ResponseEntity<ApiResponse<String>>> saveTable(@RequestBody TableVO tableVO) {
         return tableService.saveTable(tableVO)
-                .map(id -> ResponseEntity.ok(ApiResponse.success(id)))
+                .map(id -> ResponseEntity.ok(ApiResponse.success(id.toString())))
                 .onErrorResume(e -> {
                     log.error("테이블 추가 실패: {}", e.getMessage());
                     return Mono.just(ResponseEntity.badRequest().body(ApiResponse.fail("테이블 추가 실패: " + e.getMessage())));
@@ -64,6 +65,28 @@ public class TableController {
                 .onErrorResume(e -> {
                     log.error("테이블 조회 실패: {}", e.getMessage());
                     return Mono.just(ResponseEntity.badRequest().body(ApiResponse.fail("테이블 조회 실패: " + e.getMessage())));
+                });
+    }
+
+    @PostMapping("/diagramTable/{tableId}/{diagramId}")
+    @Operation(summary = "다이어그램 테이블 매핑", description = "다이어그램과 테이블을 매핑합니다.")
+    public Mono<ResponseEntity<ApiResponse<String>>> saveDiagramTable(@PathVariable ObjectId tableId, @PathVariable ObjectId diagramId, @RequestBody DiagramTableVO diagramTableVO) {
+        return tableService.mapTableToDiagram(tableId, diagramId, diagramTableVO)
+                .map(id -> ResponseEntity.ok(ApiResponse.success(id.toString())))
+                .onErrorResume(e -> {
+                    log.error("다이어그램 테이블 매핑 실패: {}", e.getMessage());
+                    return Mono.just(ResponseEntity.badRequest().body(ApiResponse.fail("다이어그램 테이블 매핑 실패: " + e.getMessage())));
+                });
+    }
+
+    @DeleteMapping("/diagramTable/{tableId}/{diagramId}")
+    @Operation(summary = "다이어그램 테이블 매핑 삭제", description = "다이어그램과 테이블의 매핑을 삭제합니다.")
+    public Mono<ResponseEntity<ApiResponse<Object>>> deleteDiagramTable(@PathVariable ObjectId tableId, @PathVariable ObjectId diagramId) {
+        return tableService.unmapTableToDiagram(tableId, diagramId)
+                .then(Mono.fromCallable(() -> ResponseEntity.ok(ApiResponse.success())))
+                .onErrorResume(e -> {
+                    log.error("다이어그램 테이블 매핑 삭제 실패: {}", e.getMessage());
+                    return Mono.just(ResponseEntity.badRequest().body(ApiResponse.fail("다이어그램 테이블 매핑 삭제 실패: " + e.getMessage())));
                 });
     }
 }

@@ -1,6 +1,8 @@
 package com.flowerd.backend.service;
 
+import com.flowerd.backend.entity.DiagramTable;
 import com.flowerd.backend.entity.Table;
+import com.flowerd.backend.entity.dto.inbound.DiagramTableVO;
 import com.flowerd.backend.entity.dto.inbound.TableVO;
 import com.flowerd.backend.entity.dto.outbound.ColumnReturns;
 import com.flowerd.backend.entity.dto.outbound.ConstraintsReturns;
@@ -35,9 +37,10 @@ public class TableService {
                                         tableVO.getSchemaId(),
                                         tableVO.getTableName()
                                 )
-                        ).map(Table::getId)
-                );
+                        )
+                ).map(Table::getId);
     }
+
 
 
 
@@ -48,25 +51,28 @@ public class TableService {
                 .then(tableRepository.deleteById(tableId));
     }
 
+
     public Mono<Void> updateTable(TableVO tableVO, ObjectId tableId) {
-        return tableRepository.findById(tableId).
-                switchIfEmpty(Mono.error(new RuntimeException("테이블이 존재하지 않습니다.")))
+        return tableRepository.findById(tableId)
+                .switchIfEmpty(Mono.error(new RuntimeException("테이블이 존재하지 않습니다.")))
                 .flatMap(table -> {
                     if (tableVO.getTableName() != null) {
                         table.setTableName(tableVO.getTableName());
                     }
-                    return tableRepository.save(table);
+                    return tableRepository.save(table)
+                            .thenReturn(table); // Table을 저장하고 반환
                 }).then();
     }
+
+
+
 
     // 테이블 - 스키마 구조
     public Mono<TableReturns> getListTableByTableId(ObjectId tableId) {
         return tableRepository.findById(tableId)
                 .switchIfEmpty(Mono.error(new RuntimeException("테이블이 존재하지 않습니다.")))
                 .flatMap(table -> {
-                    TableReturns tableReturns = new TableReturns();
-                    tableReturns.setId(table.getId());
-                    tableReturns.setTableName(table.getTableName());
+                    TableReturns tableReturns = new TableReturns(table.getId(), table.getTableName(), null, null);
 
                     Mono<List<ColumnReturns>> columnReturnsList = columnRepository.findAllByTableId(tableId)
                             .flatMapSequential(column -> columnService.getListColumn(column.getId()))
@@ -93,11 +99,7 @@ public class TableService {
                 .flatMap(diagramTable -> tableRepository.findById(diagramTable.getTableId())
                         .switchIfEmpty(Mono.error(new RuntimeException("테이블이 존재하지 않습니다.")))
                         .flatMap(table -> {
-                            TableDiagramReturns tableDiagramReturns = new TableDiagramReturns();
-                            tableDiagramReturns.setId(table.getId());
-                            tableDiagramReturns.setTableName(table.getTableName());
-                            tableDiagramReturns.setPos_x(diagramTable.getSize_x());
-                            tableDiagramReturns.setPos_y(diagramTable.getSize_y());
+                            TableDiagramReturns tableDiagramReturns = new TableDiagramReturns(table.getId(), table.getTableName(), diagramTable.getSize_x(), diagramTable.getSize_y(), null, null);
 
                             Mono<List<ColumnReturns>> columnReturnsList = columnRepository.findAllByTableId(table.getId())
                                     .flatMap(column -> columnService.getListColumn(column.getId()))
@@ -116,4 +118,16 @@ public class TableService {
                         }));
     }
 
+    public Mono<ObjectId> mapTableToDiagram(ObjectId tableId, ObjectId diagramId, DiagramTableVO diagramTableVO){
+        return tableRepository.findById(tableId)
+                .switchIfEmpty(Mono.error(new RuntimeException("테이블이 존재하지 않습니다.")))
+                .flatMap(table -> diagramTableRepository.save(new DiagramTable(diagramId, tableId, diagramTableVO.getPosX(), diagramTableVO.getPosY()))
+                        .map(DiagramTable::getId));
+    }
+
+    public Mono<Void> unmapTableToDiagram(ObjectId tableId, ObjectId diagramId){
+        return diagramTableRepository.findByDiagramIdAndTableId(diagramId, tableId)
+                .switchIfEmpty(Mono.error(new RuntimeException("다이어그램 테이블이 존재하지 않습니다.")))
+                .flatMap(diagramTable -> diagramTableRepository.deleteById(diagramTable.getId()));
+    }
 }

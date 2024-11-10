@@ -6,6 +6,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
 public interface DiagramTableRepository extends ReactiveMongoRepository<DiagramTable, ObjectId>{
@@ -13,5 +14,5 @@ public interface DiagramTableRepository extends ReactiveMongoRepository<DiagramT
 
     Flux<DiagramTable> findAllByTableId(ObjectId tableId);
 
-    Flux<DiagramTable> findAllByDiagramIdAndTableId(ObjectId diagramId, ObjectId tableId);
+    Mono<DiagramTable> findByDiagramIdAndTableId(ObjectId diagramId, ObjectId tableId);
 }

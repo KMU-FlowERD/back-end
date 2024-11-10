@@ -8,8 +8,5 @@ import org.bson.types.ObjectId;
 @Setter
 public class TableVO {
     private ObjectId schemaId;
-    private ObjectId diagramId;
     private String tableName;
-    private Long posX;
-    private Long posY;
 }
