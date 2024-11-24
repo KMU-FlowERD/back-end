@@ -13,7 +13,11 @@ public class ConstraintsReturns {
 
     private String id;
 
+    private String childTableId;
+
     private String childColumnId;
+
+    private String parentTableId;
 
     private String parentColumnId;
 
@@ -27,9 +31,11 @@ public class ConstraintsReturns {
 
     private RELTYPE relType;
 
-    public ConstraintsReturns(ObjectId id,ObjectId childColumnId, ObjectId parentColumnId, PARTICIPATION parentParticipation, PARTICIPATION childParticipation, CARDINALITY parentCardinality, CARDINALITY childCardinality, RELTYPE relType) {
+    public ConstraintsReturns(ObjectId id,ObjectId childTableId, ObjectId childColumnId, ObjectId parentTableId, ObjectId parentColumnId, PARTICIPATION parentParticipation, PARTICIPATION childParticipation, CARDINALITY parentCardinality, CARDINALITY childCardinality, RELTYPE relType) {
         this.id = id.toString();
+        this.childTableId = childTableId.toString();
         this.childColumnId = childColumnId.toString();
+        this.parentTableId = parentTableId.toString();
         this.parentColumnId = parentColumnId.toString();
         this.parentParticipation = parentParticipation;
         this.childParticipation = childParticipation;

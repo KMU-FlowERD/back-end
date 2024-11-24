@@ -23,7 +23,7 @@ public class ConstraintsService {
     public Mono<ConstraintsReturns> getListConstraints(ObjectId constraintsId) {
         return constraintsRepository.findById(constraintsId)
                 .switchIfEmpty(Mono.error(new RuntimeException("칼럼이 존재하지 않습니다.")))
-                .map(constraints -> new ConstraintsReturns(constraints.getId(), constraints.getChildColumnId(), constraints.getParentColumnId(), constraints.getParentParticipation(), constraints.getChildParticipation(), constraints.getParentCardinality(), constraints.getChildCardinality(), constraints.getRelType()));
+                .map(constraints -> new ConstraintsReturns(constraints.getId(), constraints.getChildTableId(), constraints.getChildColumnId(),constraints.getParentTableId(), constraints.getParentColumnId(), constraints.getParentParticipation(), constraints.getChildParticipation(), constraints.getParentCardinality(), constraints.getChildCardinality(), constraints.getRelType()));
     }
 
     public Mono<ObjectId> saveConstraints(ConstraintsVO constraintsVO) {
@@ -34,7 +34,9 @@ public class ConstraintsService {
                 .flatMap(tuple ->
                         constraintsRepository.save(
                                 new Constraints(
+                                        constraintsVO.getChildTableId(),
                                         constraintsVO.getChildColumnId(),
+                                        constraintsVO.getParentTableId(),
                                         constraintsVO.getParentColumnId(),
                                         constraintsVO.getParentParticipation(),
                                         constraintsVO.getChildParticipation(),
@@ -73,8 +75,14 @@ public class ConstraintsService {
                                 }
 
                                 // 업데이트할 필드가 존재하면 설정
+                                if (constraintsVO.getChildTableId() != null) {
+                                    constraints.setChildTableId(constraintsVO.getChildTableId());
+                                }
                                 if (constraintsVO.getChildColumnId() != null) {
                                     constraints.setChildColumnId(constraintsVO.getChildColumnId());
+                                }
+                                if (constraintsVO.getParentTableId() != null) {
+                                    constraints.setParentTableId(constraintsVO.getParentTableId());
                                 }
                                 if (constraintsVO.getParentColumnId() != null) {
                                     constraints.setParentColumnId(constraintsVO.getParentColumnId());

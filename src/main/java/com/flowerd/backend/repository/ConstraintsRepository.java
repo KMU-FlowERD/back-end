@@ -12,6 +12,8 @@ public interface ConstraintsRepository extends ReactiveMongoRepository<Constrain
 
     Flux<Constraints> findAllByParentTableId(ObjectId TableId);
 
+    Flux<Constraints> findAllByChildTableId(ObjectId TableId);
+
     Mono<Void> deleteAllByParentColumnId(ObjectId columnId);
 
     Mono<Void> deleteAllByChildColumnId(ObjectId columnId);

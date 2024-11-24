@@ -38,8 +38,10 @@ public class Constraints {
 
     private RELTYPE relType; // 모두가 하나라도 식별이면 식별관계, 그렇지 않다면 비식별관계
 
-    public Constraints(ObjectId childColumnId, ObjectId parentColumnId, PARTICIPATION parentParticipation, PARTICIPATION childParticipation, CARDINALITY parentCardinality, CARDINALITY childCardinality, RELTYPE relType) {
+    public Constraints(ObjectId childTableId,ObjectId childColumnId,ObjectId parentTableId, ObjectId parentColumnId, PARTICIPATION parentParticipation, PARTICIPATION childParticipation, CARDINALITY parentCardinality, CARDINALITY childCardinality, RELTYPE relType) {
+        this.childTableId = childTableId;
         this.childColumnId = childColumnId;
+        this.parentTableId = parentTableId;
         this.parentColumnId = parentColumnId;
         this.parentParticipation = parentParticipation;
         this.childParticipation = childParticipation;
@@ -48,7 +50,7 @@ public class Constraints {
         this.relType = relType;
     }
 
-    public Mono<Constraints> of(ObjectId childColumnId, ObjectId parentColumnId, PARTICIPATION parentParticipation, PARTICIPATION childParticipation, CARDINALITY parentCardinality, CARDINALITY childCardinality, RELTYPE relType) {
-        return Mono.just(new Constraints(childColumnId, parentColumnId, parentParticipation, childParticipation, parentCardinality, childCardinality, relType));
+    public Mono<Constraints> of(ObjectId childTableId, ObjectId childColumnId, ObjectId parentTableId, ObjectId parentColumnId, PARTICIPATION parentParticipation, PARTICIPATION childParticipation, CARDINALITY parentCardinality, CARDINALITY childCardinality, RELTYPE relType) {
+        return Mono.just(new Constraints(childTableId, childColumnId, parentTableId, parentColumnId, parentParticipation, childParticipation, parentCardinality, childCardinality, relType));
     }
 }
