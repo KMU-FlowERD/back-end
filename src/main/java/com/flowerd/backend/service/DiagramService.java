@@ -73,7 +73,7 @@ public class DiagramService {
                             .map(diagramTableList -> {
                                 diagramReturns.setTables(diagramTableList);
                                 return diagramReturns;
-                            });햣
+                            });
                 });
     }
 }
