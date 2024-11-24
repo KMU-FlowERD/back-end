@@ -6,8 +6,8 @@ spring:
     redis:
       repositories:
         enabled: false
-      host: ${Redis_Host}
-      port: ${Redis_Port}
+      host: redis
+      port: 27017
 
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration,org.springframework.boot.autoconfigure.data.redis.RedisReactiveAutoConfiguration

@@ -16,8 +16,6 @@ services:
       MongoDB_Database: ${MONGO_DATABASE}
       Mongo_Username: ${MONGO_USERNAME}
       Mongo_Password: ${MONGO_PASSWORD}
-      Redis_Host: ${REDIS_HOST}
-      Redis_Port: ${REDIS_PORT}
       Mail_Email: ${MAIL_EMAIL}
       Mail_Password: ${MAIL_PASSWORD}
       JWT_Secret: ${JWT_SECRET}
