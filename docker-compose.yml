@@ -1,5 +1,9 @@
 version: '3'
 
+networks:
+  app-network:
+    driver: bridge
+
 services:
 
   application:
@@ -9,6 +13,8 @@ services:
     ports:
       - "8080:8080"
     restart: always
+    networks:
+      - app-network
     environment:
       TZ: "Asia/Seoul"
       MongoDB_Host: ${MONGO_HOST}
@@ -27,6 +33,8 @@ services:
   redis:
     container_name: redis
     hostname: redis
+    networks:
+      - app-network
     image: redis:latest
     ports:
       - "6379:6379"
@@ -38,6 +46,8 @@ services:
   mongo:
     container_name: mongo
     hostname: mongo
+    networks:
+      - app-network
     image: mongo:latest
     ports:
       - "27017:27017"
