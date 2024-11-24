@@ -68,12 +68,12 @@ public class DiagramService {
                     DiagramReturns diagramReturns = new DiagramReturns(diagram.getId(), diagram.getPixel_x(), diagram.getPixel_y(), diagram.getDiagramContent(), null);
 
                     return diagramTableRepository.findAllByDiagramId(diagramId)
-                            .flatMap(diagramTable -> tableService.getListTableByDiagramTableId(diagramTable.getTableId()))
+                            .flatMap(diagramTable -> tableService.getListTableByDiagramTableId(diagramTable.getId()))
                             .collectList()
                             .map(diagramTableList -> {
                                 diagramReturns.setTables(diagramTableList);
                                 return diagramReturns;
-                            });
+                            });햣
                 });
     }
 }
