@@ -27,14 +27,14 @@ public class RedisConfig {
     @Bean
     @Primary
     public ReactiveRedisConnectionFactory reactiveRedisConnectionFactory1() {
-        RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
+        RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration(REDIS_HOST, REDIS_PORT);
         redisConfig.setDatabase(0);
         return new LettuceConnectionFactory(redisConfig, LettuceClientConfiguration.defaultConfiguration());
     }
 
     @Bean
     public ReactiveRedisConnectionFactory reactiveRedisConnectionFactory2() {
-        RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
+        RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration(REDIS_HOST, REDIS_PORT);
         redisConfig.setDatabase(1);
         return new LettuceConnectionFactory(redisConfig, LettuceClientConfiguration.defaultConfiguration());
     }
