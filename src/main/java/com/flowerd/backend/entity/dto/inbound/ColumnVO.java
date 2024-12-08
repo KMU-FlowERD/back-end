@@ -12,6 +12,10 @@ public class ColumnVO {
 
     private ObjectId tableId;
 
+    private String path;
+
+    private String constraintName;
+
     private String columnName;
 
     private Boolean nullable; // Constraint

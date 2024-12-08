@@ -22,6 +22,10 @@ public class Column {
 
     private ObjectId tableId;
 
+    private String path;
+
+    private String constraintName;
+
     private String columnName;
 
     private Boolean nullable; // Constraint
@@ -35,8 +39,10 @@ public class Column {
     private Integer length;
 
 
-    public Column(ObjectId tableId, String columnName, Boolean nullable, Boolean unique, ISKEY isKey, DATATYPE dataType, Integer length) {
+    public Column(ObjectId tableId, String path, String constraintName,  String columnName, Boolean nullable, Boolean unique, ISKEY isKey, DATATYPE dataType, Integer length) {
         this.tableId = tableId;
+        this.path = path;
+        this.constraintName = constraintName;
         this.columnName = columnName;
         this.nullable = nullable;
         this.unique = unique;
@@ -45,7 +51,7 @@ public class Column {
         this.length = length;
     }
 
-    public Mono<Column> of(ObjectId tableId, String columnName, Boolean nullable, Boolean unique, ISKEY isKey, DATATYPE dataType, Integer length) {
-        return Mono.just(new Column(tableId, columnName, nullable, unique, isKey, dataType, length));
+    public Mono<Column> of(ObjectId tableId, String path, String constraintName,  String columnName, Boolean nullable, Boolean unique, ISKEY isKey, DATATYPE dataType, Integer length) {
+        return Mono.just(new Column(tableId, path, constraintName, columnName, nullable, unique, isKey, dataType, length));
     }
 }

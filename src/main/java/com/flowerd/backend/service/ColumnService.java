@@ -33,6 +33,12 @@ public class ColumnService {
         return columnRepository.findById(columnId)
                 .switchIfEmpty(Mono.error(new RuntimeException("컬럼이 존재하지 않습니다.")))
                 .flatMap(column -> {
+                    if (columnVO.getPath() != null) {
+                        column.setPath(columnVO.getPath());
+                    }
+                    if (columnVO.getConstraintName() != null) {
+                        column.setConstraintName(columnVO.getConstraintName());
+                    }
                     if (columnVO.getColumnName() != null) {
                         column.setColumnName(columnVO.getColumnName());
                     }
@@ -59,7 +65,7 @@ public class ColumnService {
     public Mono<ColumnReturns> getListColumn(ObjectId columnId) {
         return columnRepository.findById(columnId)
                 .switchIfEmpty(Mono.error(new RuntimeException("컬럼이 존재하지 않습니다.")))
-                .map(column -> new ColumnReturns(column.getId(), column.getColumnName(), column.getNullable(), column.getUnique(), column.getIsKey(), column.getDataType(), column.getLength()));
+                .map(column -> new ColumnReturns(column.getId(), column.getPath(), column.getConstraintName(), column.getColumnName(), column.getNullable(), column.getUnique(), column.getIsKey(), column.getDataType(), column.getLength()));
     }
 
     public Mono<ObjectId> saveColumn(ColumnVO columnVO) {
@@ -69,6 +75,8 @@ public class ColumnService {
                         columnRepository.save(
                                 new Column(
                                         columnVO.getTableId(),
+                                        columnVO.getPath(),
+                                        columnVO.getConstraintName(),
                                         columnVO.getColumnName(),
                                         columnVO.getNullable(),
                                         columnVO.getUnique(),

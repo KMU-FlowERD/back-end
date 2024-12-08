@@ -12,6 +12,10 @@ public class ColumnReturns {
 
     private String id;
 
+    private String path;
+
+    private String constraintName;
+
     private String columnName;
 
     private Boolean nullable; // Constraint
@@ -24,8 +28,10 @@ public class ColumnReturns {
 
     private Integer length;
 
-    public ColumnReturns(ObjectId id, String columnName, Boolean nullable, Boolean unique, ISKEY isKey, DATATYPE dataType, Integer length) {
+    public ColumnReturns(ObjectId id, String path, String constraintName, String columnName, Boolean nullable, Boolean unique, ISKEY isKey, DATATYPE dataType, Integer length) {
         this.id = id.toString();
+        this.path = path;
+        this.constraintName = constraintName;
         this.columnName = columnName;
         this.nullable = nullable;
         this.unique = unique;
