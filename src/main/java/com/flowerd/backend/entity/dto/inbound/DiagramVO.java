@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 @Setter
 public class DiagramVO {
     private ObjectId projectId;
+    private ObjectId schemaId;
     private String diagramName;
     private String diagramContent;
     private Long SizeX;

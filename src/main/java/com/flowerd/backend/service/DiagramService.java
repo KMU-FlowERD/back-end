@@ -28,6 +28,7 @@ public class DiagramService {
                         diagramRepository.save(
                             new Diagram(
                                     diagramVO.getProjectId(),
+                                    diagramVO.getSchemaId(),
                                     diagramVO.getDiagramName(),
                                     diagramVO.getSizeX(),
                                     diagramVO.getSizeY(),
@@ -65,7 +66,7 @@ public class DiagramService {
     public Mono<DiagramReturns> getListDiagram(ObjectId diagramId) {
         return diagramRepository.findById(diagramId)
                 .flatMap(diagram -> {
-                    DiagramReturns diagramReturns = new DiagramReturns(diagram.getId(), diagram.getPixel_x(), diagram.getPixel_y(), diagram.getDiagramContent(), null);
+                    DiagramReturns diagramReturns = new DiagramReturns(diagram.getId(), diagram.getSchemaId(), diagram.getPixel_x(), diagram.getPixel_y(), diagram.getDiagramContent(), null);
 
                     return diagramTableRepository.findAllByDiagramId(diagramId)
                             .flatMap(diagramTable -> tableService.getListTableByDiagramTableId(diagramTable.getId()))
